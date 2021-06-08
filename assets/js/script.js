@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", function() {
     for (let button of buttons) {
         button.addEventListener("click", function() {
             if (this.getAttribute("data-type") === "submit") {
-                alert("you clicked Submit!");
+                checkAnswer();
             } else {
                 let gameType = this.getAttribute("data-type");
                 runGame(gameType);
@@ -38,12 +38,44 @@ if (gameType === "addition") {
 }
 
 
+/**
+ * Checks the answer against the first element in 
+ * the returned calculateCorrectAnswer array
+ */
 function checkAnswer() {
-
+    // checking the answer - getting it from the dom
+    let userAnswer = parseInt(document.getElementById("answer-box").value); 
+    // getting the correct answer from the correctAnswer function
+    let calculaterAnswer = calculateCorrectAnswer();
+    // setting an is correct variable which will be either true or false if user is correct
+    let isCorrect = userAnswer === calculaterAnswer[0];
+// if the ans id true
+    if (isCorrect) {
+        alert("Hey! You got it right! :D")
+        // otherwise if user was wrong
+    }else{
+        alert(`Awwwww..... you answered ${userAnswer}. The correct answer was ${calculaterAnswer[0]}!`);
+    }
+// last this is to run another game of the same type so we use a second element 
+    runGame(calculaterAnswer[1]);
 }
 
-function calculateCorrectAnswer() {
+/**
+ * Gets the operands (the numbers) and the operator (plus, minus etc)
+ * directly from the dom, and returns the correct answer.
+ */
 
+function calculateCorrectAnswer() {
+    let operand1 = parseInt(document.getElementById('operand1').innerText);
+    let operand2 = parseInt(document.getElementById('operand2').innerText);
+    let operator = document.getElementById('operator').innerText;
+
+    if (operator === "+") {
+        return [operand1 + operand2, "addition"];
+    }else{
+        alert(`Unimplemented operator ${operator}`);
+        throw `Unimplemented operator ${operator}. Aborting!`;
+    }
 }
 
 function incrementScore() {
